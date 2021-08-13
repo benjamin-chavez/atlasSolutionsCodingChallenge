@@ -1,8 +1,9 @@
 """
 Problem:
-    The attached soccer.dat file contains the results from the English Premier League. The columns labeled ‘F’ and ‘A’ contain the total number of goals scored for and against each team in that season (so Arsenal scored 79 goals against opponents, and had 36 goals scored against them). 
-    
     Write a program to print the name of the team with the smallest difference in ‘for’ and ‘against’ goals.
+
+Note:
+    In contrast to the Temperature probelem, this solution is intentinally less dynamic to showcase a simpler more direct approach to solving these problems.
 """
 import pandas as pd
 import re
@@ -19,14 +20,9 @@ with open(r'./soccer.dat') as dat_file, open('soccer.csv', 'w') as csv_file:
         if len(row) > 2:             
             csv_writer.writerow(row[1:-1])
 
-# create the dataframe using the new soccer.csv file
-df = pd.read_csv('./soccer.csv')
 
-# Add a column to the datafram for each teams absolute  difference in ‘for’ and ‘against’ goals
-df['difForAgainst'] = (df['F'] - df['A']).abs()
+df = pd.read_csv('./soccer.csv')                # create the dataframe using the new soccer.csv file
+df['difForAgainst'] = (df['F'] - df['A']).abs() # Calculate the difference in ‘for’ and ‘against’ goals for each team
+minForAgainstIdx = df['difForAgainst'].idxmin() # Get index of the team with the min goal difference
 
-# Find the index of the team with the minimum difference
-minForAgainstIdx = df['difForAgainst'].idxmin()
-
-# print the name of team
-print(df.loc[minForAgainstIdx, 'Team'])
+print(df.loc[minForAgainstIdx, 'Team'])         
